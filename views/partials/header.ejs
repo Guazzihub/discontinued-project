@@ -1,0 +1,29 @@
+<header class="header">
+  <a href="/items/dashboard" class="logo">
+    <img src="/images/manager02.png" alt="Logo">
+</a>
+  
+    
+<nav class="nav">
+  <ul>
+    <% if (user.role === 'admin') { %>
+      <li><a href="/clients">Client List</a></li>
+      <% if (user.clientView) { %>
+        <li><span class="viewing-as">Viewing as: <%= user.clientView.name %></span></li>
+      <% } %>
+    <% } %>
+    <li><a href="/items/reserved">Reserved Items</a></li>
+  </ul>
+</nav>
+
+    <div class="user-info" id="user-profile">
+      <div class="user-profile">
+        <img src="<%= user.picture ? '/uploads/' + user.picture : '/images/default-avatar.png' %>" alt="profile picture" class="profile-photo" />
+        <span class="user-name"><%= user.name %></span>
+      </div>
+      <div class="dropdown-menu" id="dropdown-menu">
+        <a href="/users/settings">Settings</a>
+        <a href="/auth/logout" class="logout-btn">Logout</a>
+      </div>
+  </div>
+</header>

@@ -1,0 +1,22 @@
+<div id="edit-filter-modal" class="modal" style="display: none;">
+  <div class="modal-content">
+    <span class="close-btn" id="close-edit-modal">&times;</span>
+    <h2>Edit Filter</h2>
+    <form id="edit-filter-form">
+      <label for="savedFilters">Select a Filter:</label>
+      <select id="savedFilters" name="filterId" required>
+        <% savedFilters.forEach(filter => { %>
+          <option value="<%= filter.id %>"><%= filter.name %></option>
+        <% }) %>
+      </select>
+
+      <label for="filterName">New Name:</label>
+      <input type="text" id="filterName" name="filterName" placeholder="New filter name" required />
+
+      <div class="modal-actions">
+        <button type="submit" class="btn save-btn">Save Changes</button>
+        <button type="button" id="delete-filter-btn" class="btn remove-btn">Remove Filter</button>
+      </div>
+    </form>
+  </div>
+</div>

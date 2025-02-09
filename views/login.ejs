@@ -1,0 +1,52 @@
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <div class="login-account-inner">
+        <div class="logo-account-inner">
+            <img src="/images/placeholder.png" alt="Logo" class="logo">
+        </div>
+
+        <% if (message) { %>
+            <div class="alert <%= message.type || 'error' %>">
+                <%= message.text %>
+            </div>
+        <% } %>
+
+        <form action="/auth/login" method="POST" class="login-form">
+            <div class="form-group">
+                <input 
+                    type="email" 
+                    id="email" 
+                    name="email" 
+                    placeholder="E-mail"
+                    required 
+                    autofocus
+                >
+            </div>
+
+            <div class="form-group">
+                <input 
+                    type="password" 
+                    id="password" 
+                    name="password" 
+                    placeholder="Password"
+                    required
+                >
+            </div>
+
+            <button type="submit" class="btn login-btn">Sign In</button>
+        </form>
+        
+        <p class="register-link">
+            Not a member? <a href="/auth/register">Sign Up</a>
+        </p>
+    </div>
+
+    <script src="/scripts.js"></script>
+</body>
+</html>

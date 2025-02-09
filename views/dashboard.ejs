@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <%- include('partials/header') %>
+
+    <div class="account-inner">
+        <h1>Dashboard</h1>
+
+        <% if (locals.error) { %>
+            <div class="alert alert-danger">
+                <%= error %>
+            </div>
+        <% } %>
+
+        <ul class="tabs">
+            <li><a href="?tab=first" class="<%= tab === 'first' ? 'active' : '' %>">First items</a></li>
+            <li><a href="?tab=last" class="<%= tab === 'last' ? 'active' : '' %>">Last items</a></li>
+            <li><a href="?tab=archived" class="<%= tab === 'archived' ? 'active' : '' %>">Archived</a></li>
+        </ul>
+
+        <!-- Filters -->
+        <div class="filters">
+            <form class="filters" action="/items/dashboard" method="GET">
+                <input type="hidden" name="tab" value="<%= tab %>">
+    
+                <label for="state">State</label>
+                <select name="state" id="state">
+                    <option value="">-- All --</option>
+                    <% states.forEach(est => { %>
+                        <option value="<%= est %>" <%= query.state === est ? 'selected' : '' %>><%= est %></option>
+                    <% }) %>
+                </select>
+    
+                <label for="city">City</label>
+                <select name="city" id="city">
+                    <option value="">-- All --</option>
+                    <% cities.forEach(c => { %>
+                        <option value="<%= c %>" <%= query.city === c ? 'selected' : '' %>><%= c %></option>
+                    <% }) %>
+                </select>
+    
+                <label>Value (Min / Max)</label>
+                <div class="range-inputs">
+                    <input type="number" name="valorMin" value="<%= query.valorMin || '' %>" placeholder="Min">
+                    <input type="number" name="valorMax" value="<%= query.valorMax || '' %>" placeholder="Max">
+                </div>
+    
+                <label for="discountMin">Min Discount (%)</label>
+                <input type="number" name="discountMin" id="discountMin" value="<%= query.discountMin || '' %>" placeholder="Ex: 10">
+    
+                <button type="submit">Apply Filters</button>
+            </form>
+            <button id="saveFilterBtn" class="btn">Save Filter</button>
+            <button id="editFilterBtn" class="btn">Edit Filter</button>
+            <button id="applyFilterBtn" class="btn">Apply Filter</button>
+            <div class="stars">
+                    <span class="star <%= query.score == 1 ? 'active' : '' %>" data-value="1">⭐</span>
+                    <span class="star <%= query.score == 2 ? 'active' : '' %>" data-value="2">⭐⭐</span>
+                    <span class="star <%= query.score == 3 ? 'active' : '' %>" data-value="3">⭐⭐⭐</span>
+                    <span class="star <%= query.score >= 4 ? 'active' : '' %>" data-value="4">⭐⭐⭐⭐</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Items table -->
+        <table id="items-table" class="table">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Price</th>
+                    <th>Discount</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% if (items && items.length > 0) { %>
+                    <% items.forEach(item => { %>
+                        <tr class="<%= item.score >= 4 ? 'green-border' : item.score === 3 ? 'yellow-border' : item.score === 2 ? 'orange-border' : 'red-border' %>">
+                            <td><%= item.name %></td>
+                            <td>R$ <%= item.u_price_01 %></td>
+                            <td><%= item.u_discount %>%</td>
+                            <td>
+                                <button class="btn reservation-btn" data-id="<%= item.id %>">Reserve</button>
+                            </td>
+                        </tr>
+                    <% }); %>
+                <% } else { %>
+                    <tr>
+                        <td colspan="5" class="text-center">No items found</td>
+                    </tr>
+                <% } %>
+            </tbody>
+        </table>
+
+        <!-- loading spinner -->
+        <div id="loading" class="loading" style="display: none;">Loading items...</div>
+    </div>
+
+    <% if (typeof savedFilters !== 'undefined' && savedFilters.length > 0) { %>
+        <%- include('modals/editFilterModal', { savedFilters }) %>
+    <% } %>
+
+    <%- include('partials/footer') %>
+    <script src="/scripts.js"></script>
+</body>
+</html>
