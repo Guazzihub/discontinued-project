@@ -25,7 +25,6 @@
   "keywords": [
       "Node.js",
       "Express",
-      "MySQL",
-      "EJS",
+      "MySQL"
     ]
 }
